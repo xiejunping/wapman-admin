@@ -3,34 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node bin/www",
+    "start": "PORT=5000 node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
     "prd": "pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "debug": "^2.6.3",
+    "glob": "^7.1.2",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
     "koa-convert": "^1.2.0",
+    "koa-favicon": "^2.0.1",
     "koa-json": "^2.0.2",
     "koa-logger": "^2.0.1",
-    "koa-favicon": "^2.0.1",
     "koa-onerror": "^1.2.1",
     "koa-router": "^7.1.1",
+    "koa-session": "^5.8.1",
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.1",
     "koa2-cors": "^2.0.5",
     "koa2-session-redis": "0.0.2",
-    "koa-session": "^5.8.1",
-    "pug": "^2.0.0-rc.1",
+    "log4js": "^2.10.0",
     "md5": "^2.2.1",
+    "moment": "^2.22.2",
     "mysql": "^2.15.0",
     "promise-queue-plus": "^1.1.0",
-    "redis": "^2.8.0",
+    "pug": "^2.0.0-rc.1",
+    "qcloudsms_js": "^0.1.0",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
-    "cross-env": "^5.1.6",
     "nodemon": "^1.8.1"
   }
 }
