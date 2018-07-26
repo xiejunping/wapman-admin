@@ -9,7 +9,9 @@ class DateFmt {
     return moment().format('YYYY-MM-DD HH:mm:ss')
   }
 
-
+  nowToName () {
+    return moment().format('YYYYMMDDHHmmss')
+  }
 }
 
 module.exports = new DateFmt()

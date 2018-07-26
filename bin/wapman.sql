@@ -4,7 +4,7 @@ CREATE TABLE `wap_user` (
   `name` varchar(20) DEFAULT NULL,
   `phone` varchar(11) DEFAULT NULL,
   `nickname` varchar(20) DEFAULT NULL,
-  `password` varchar(32) DEFAULT NULL,
+  `password` varchar(65) DEFAULT NULL,
   `email` varchar(20) DEFAULT NULL,
   `sex` int(1) DEFAULT 0,
   `qq` varchar(15) DEFAULT NULL,

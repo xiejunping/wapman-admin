@@ -1,4 +1,5 @@
 const utils = require('../utils/index');
+const crypto = require('../utils/crypto');
 const { codeExpire, codeValid } = require('../common/config/server');
 
 function Decorator() {
@@ -12,15 +13,14 @@ function Decorator() {
  * @returns {Promise<void>}
  */
 Decorator.prototype.oAuth = async (ctx, next) => {
-  const sessionId = ctx.request.headers['sessionid']
-  if (sessionId) {
-    const user = await RD.get(sessionId)
-    if (user) {
-      ctx.session = {user: JSON.parse(user)}
-      await next()
-    }
-    else ctx.auth = '验证已失效，请重新登陆'
-  } else ctx.auth = '会话已失效'
+  ctx.app.on('missed', () => {
+    ctx.auth = '验证失败，请登陆'
+  });
+  ctx.app.on('expired', () => {
+    ctx.auth = '验证已过期，请重新登陆'
+  });
+  if(ctx.session.user) await next();
+  else ctx.auth = '验证已失效，请重新登陆'
 }
 
 /**
@@ -36,11 +36,12 @@ Decorator.prototype.invalid = async (ctx, next) => {
   if (!utils.isArray(rules)) ctx.throw('rule must be array', 400)
 
   let msg = ''
+  const passReg = new RegExp('pass')
   const params = ctx.request.method === 'GET' ? ctx.request.query : ctx.request.body
 
   for (let i = 0; i < rules.length; i++) {
     const rule = rules[i]
-    const param = params[rule.name]
+    const param = passReg.test(rule.name) ? crypto.aesDecrypt(params[rule.name]) : params[rule.name]
 
     // 必填
     if (rule.require && !param || rule.require && utils.isEmpty(param)) {

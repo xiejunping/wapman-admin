@@ -15,6 +15,7 @@ const connect = app => {
 
   // JSON
   app.use(bodyparser({
+    formLimit: '1mb',
     enableTypes:['json', 'form', 'text']
   }))
 
@@ -37,7 +38,7 @@ const connect = app => {
   app.use(favicon(path.join(__dirname, '../public/images/favicon.ico')))
 
   // 跨域支持
-  app.use(cors()) // { maxAge: 3600, credentials: true }
+  app.use(cors({ maxAge: 3600, credentials: true }))
 
   // 模版
   app.use(views(__dirname + '../app/views', {

@@ -7,7 +7,7 @@ const dev = {
   supportBigNumbers: true,
   multipleStatements: true,
   connectionLimit: 1000,
-  timezone: 'utc'
+  timezone: 'Asia/Shanghai'
 }
 
 const prod = {}

@@ -1,6 +1,7 @@
 const Mysql = require('../common/helper/mysql');
 const RD = require('../common/helper/redis');
 const SMS = require('../controllers/sms');
+const COS = require('../controllers/cos');
 const utils = require('../utils/index');
 const logger = require('../controllers/logger');
 const DB = new Mysql('wap_user');
@@ -84,6 +85,18 @@ const userControl = {
     }, info);
 
     return await userModel.add(info);
+  },
+  uploadUserInfo: async (id, info) => {
+    return await userModel.update(id, info);
+  },
+  getInfoById: async (id) => {
+    return await userModel.getByUserId(id)
+  },
+  uploadFile: async (base64) => {
+    const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
+    const dataBuffer = new Buffer(base64Data, 'base64');
+
+    return await COS.uploadImg(dataBuffer);
   },
 };
 

@@ -9,6 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cos-nodejs-sdk-v5": "^2.4.6",
+    "crypto-js": "^3.1.9-1",
     "debug": "^2.6.3",
     "glob": "^7.1.2",
     "koa": "^2.2.0",
@@ -25,13 +27,13 @@
     "koa2-cors": "^2.0.5",
     "koa2-session-redis": "0.0.2",
     "log4js": "^2.10.0",
-    "md5": "^2.2.1",
     "moment": "^2.22.2",
     "mysql": "^2.15.0",
     "promise-queue-plus": "^1.1.0",
     "pug": "^2.0.0-rc.1",
     "qcloudsms_js": "^0.1.0",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "string-random": "^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

@@ -1,3 +1,5 @@
+const random = require('string-random');
+
 const utils = {
   /**
    * 随机范围的数
@@ -15,11 +17,15 @@ const utils = {
    */
   randomNumber: len => {
     if (typeof len !== 'number' || len === 0) return
-    let arr = []
-    for(let i = 0; i < len; i++) {
-      arr.push(Math.floor(Math.random() * 10))
-    }
-    return arr.join('')
+    return random(len, {letters: false})
+  },
+  randomString: len => {
+    if (typeof len !== 'number' || len === 0) return
+    return random(len)
+  },
+  randomLetter: len => {
+    if (typeof len !== 'number' || len === 0) return
+    return random(len, {numbers: false})
   },
   trim: str => {
     if (String.prototype.trim) {
