@@ -81,13 +81,20 @@ Decorator.prototype.invalid = async (ctx, next) => {
  */
 Decorator.prototype.checkCode = async (ctx, next) => {
   const RD = require('../common/helper/redis');
-
   const { phone, code } = ctx.request.body;
+
+  // 手机号是否存在redis
+  const isPhone = await RD.exists(phone);
+  if (!isPhone) {
+    ctx.msg = '手机号还未发送验证码';
+    return;
+  }
+
   const val = await RD.get(phone);
   const index = await RD.pttl(phone);
 
   if (val === code) {
-    if (index > ((codeExpire - codeValid) * 60)) {
+    if (index > ((codeExpire - codeValid) * 60000)) {
       RD.del(phone);
       await next();
     } else {
@@ -101,4 +108,4 @@ Decorator.prototype.checkCode = async (ctx, next) => {
   }
 }
 
-module.exports = Decorator;
+module.exports = new Decorator();

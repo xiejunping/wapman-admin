@@ -10,6 +10,16 @@ const dev = {
   timezone: 'Asia/Shanghai'
 }
 
-const prod = {}
+const prod = {
+  host: '127.0.0.1',
+  user: 'wapman',
+  password: 'zwm198875',
+  port: '3306',
+  database: 'wapman',
+  supportBigNumbers: true,
+  multipleStatements: true,
+  connectionLimit: 1000,
+  timezone: 'Asia/Shanghai'
+}
 
 module.exports = process.env.NODE_ENV === 'production' ? prod : dev

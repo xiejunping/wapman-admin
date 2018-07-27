@@ -9,7 +9,7 @@ CREATE TABLE `wap_user` (
   `sex` int(1) DEFAULT 0,
   `qq` varchar(15) DEFAULT NULL,
   `cid` varchar(20) DEFAULT NULL,
-  `reg_date` bigint DEFAULT NULL,
+  `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `avatar` varchar(255) DEFAULT NULL,
   `pid` varchar(20) DEFAULT NULL,
   `all_pid` varchar(255) DEFAULT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `wap_login` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(15) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
-  `creat_date` datetime DEFAULT NULL,
+  `creat_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sessionId` varchar(64) DEFAULT NULL,
   `client` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)

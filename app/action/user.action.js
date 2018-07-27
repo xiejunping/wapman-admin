@@ -1,13 +1,13 @@
 const Mysql = require('../common/helper/mysql');
 const RD = require('../common/helper/redis');
-const SMS = require('../controllers/sms');
 const COS = require('../controllers/cos');
 const utils = require('../utils/index');
+const crypto = require('../utils/crypto');
 const logger = require('../controllers/logger');
 const DB = new Mysql('wap_user');
 const userModel = require('../model/user.model')(DB);
 
-const { codeExpire, errLogin } = require('../common/config/server')
+const { errLogin } = require('../common/config/server');
 
 const userControl = {
   /**
@@ -29,17 +29,6 @@ const userControl = {
     // 递归生成邀请码
     return await getInvite();
   },
-  sendCode: async (phone) => {
-    const code = utils.randomNumber(6);
-    await RD.set(phone, code);
-    await RD.pexpireat(phone, Date.parse(new Date()) + codeExpire * 60000)
-
-    try {
-      return await SMS.smsLogin(phone, code);
-    } catch (err) {
-      logger(err);
-    }
-  },
   checkInfo: async (info) => {
     const row = await userModel.getInfoByJson(info);
     return !!row;
@@ -52,6 +41,9 @@ const userControl = {
       logger(`验证密码时找不到用户信息：${name}`);
       return;
     }
+  },
+  cryptPass: (password) => {
+    return crypto.md5(crypto.aesDecrypt(password)).toString();
   },
   /**
    * 是否锁住
@@ -90,7 +82,10 @@ const userControl = {
     return await userModel.update(id, info);
   },
   getInfoById: async (id) => {
-    return await userModel.getByUserId(id)
+    return await userModel.getByUserId(id);
+  },
+  getInfoByPhone: async (phone) => {
+    return await userModel.getInfoByJson({phone});
   },
   uploadFile: async (base64) => {
     const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");

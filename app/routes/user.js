@@ -2,10 +2,8 @@ const router = require('koa-router')();
 const action = require('../action/user.action');
 const actionLogin = require('../action/login.action');
 const DateFmt = require('../utils/date');
-const crypto = require('../utils/crypto');
 const logger = require('../controllers/logger');
-const Decorator = require('../controllers/decorator');
-const c = new Decorator();
+const c = require('../controllers/decorator');
 
 router.prefix('/user');
 
@@ -28,9 +26,8 @@ router.post('/register', c.invalid, c.checkCode, async (ctx, next) => {
 
   const user = await action.registerUser({
     name: username,
-    password: crypto.md5(crypto.aesDecrypt(password)),
+    password: action.cryptPass(password),
     phone: phone,
-    reg_date: Date.parse(new Date()),
     cid: inviteCode,
     pid: invite
   });
@@ -62,7 +59,7 @@ router.post('/login', c.invalid, async (ctx, next) => {
     return;
   }
 
-  const user = await action.checkPass(username, crypto.md5(crypto.aesDecrypt(password)).toString());
+  const user = await action.checkPass(username, action.cryptPass(password));
   if (!user) {
     await action.setTimeRedis(username);
     ctx.msg = '用户名或密码错误';
@@ -75,31 +72,10 @@ router.post('/login', c.invalid, async (ctx, next) => {
       uid: user.id,
       name: user.name,
       client: client,
-      sessionId: user.sessionId,
-      creat_date: DateFmt.now()
+      sessionId: user.sessionId
     });
     ctx.data = user;
   }
-  return;
-});
-
-// 获取短信验证码
-router.post('/code', c.invalid, async (ctx, next) => {
-  const { phone } = ctx.request.body;
-  const rs = await action.sendCode(phone);
-  if (rs) {
-    if (rs.result === 0) ctx.data = DateFmt.now();
-    else ctx.msg = rs.errmsg;
-    return;
-  } else ctx.throw('发送短信验证码失败', 400);
-});
-
-// 手机号是否存在
-router.get('/check', c.invalid, async (ctx, next) => {
-  const { phone } = ctx.request.query;
-  const checkUserPhone = await action.checkInfo({phone});
-
-  ctx.data = checkUserPhone;
   return;
 });
 
@@ -114,15 +90,35 @@ router.get('/name', c.invalid, async (ctx, next) => {
 
 // 重置密码
 router.post('/reset/pass', c.invalid, async (ctx, next) => {
-  const { password } = ctx.request.body;
+  const { phone, password } = ctx.request.body;
 
-})
+  const { id, name } = await action.getInfoByPhone(phone);
+  const rs = await action.uploadUserInfo(id, { password: action.cryptPass(password) });
+  if (rs.affectedRows === 1) {
+    ctx.data = DateFmt.now();
+    return;
+  } else {
+    logger(`${name}重置密码错误 ${DateFmt.now()}`);
+    ctx.throw('重置密码错误', 400);
+  }
+});
 
 // 更改密码
 router.post('/modify/pass', c.oAuth, c.invalid, async (ctx, next) => {
-  const { uid } = ctx.session.user;
   const { password, newpass } = ctx.request.body;
+  const { id, name } = ctx.session.user;
 
+  const user = await action.checkPass(name, action.cryptPass(password));
+  if (user) {
+    const rs = await action.uploadUserInfo(id, {password: action.cryptPass(newpass)});
+    if (rs.affectedRows === 1) {
+      ctx.data = DateFmt.now();
+      return;
+    } else ctx.throw('更改密码错误', 400);
+  } else {
+    ctx.msg = '原密码错误';
+    return;
+  }
 });
 
 // 获得个人信息
@@ -174,6 +170,19 @@ router.post('/update/avatar', c.oAuth, c.invalid, async (ctx, next) => {
   }
 });
 
+// 更换手机号
+router.post('/change/phone', c.oAuth, c.invalid, c.checkCode, async (ctx, next) => {
+  const { phone } = ctx.request.body;
+  const { id } = ctx.session.user;
 
+  const rs = await action.uploadUserInfo(id, { phone });
+  if (rs.affectedRows === 1) {
+    ctx.data = DateFmt.now();
+    return;
+  } else {
+    logger(`${id}更换手机号为${phone}失败 ${DateFmt.now()}`);
+    ctx.throw('更换手机号失败', 400);
+  }
+});
 
 module.exports = router
