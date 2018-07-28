@@ -24,6 +24,9 @@ router.post('/register', c.invalid, c.checkCode, async (ctx, next) => {
   // 随机邀请码
   const inviteCode = await action.createInviteCode();
 
+  // 查询所有邀请人
+  const allPid = await action.calcInviteId(invite);
+
   const user = await action.registerUser({
     name: username,
     password: action.cryptPass(password),

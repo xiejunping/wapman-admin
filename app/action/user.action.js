@@ -29,6 +29,20 @@ const userControl = {
     // 递归生成邀请码
     return await getInvite();
   },
+  /**
+   * 分散计算pid
+   * @param invite
+   * @returns {Promise<*>}
+   */
+  calcInviteId: async (invite) => {
+    if (!invite) return null;
+    const { all_pid } = await userModel.getInfoByJson({and: {cid: invite}});
+    if (!!all_pid) {
+      return `${invite},${all_pid}`;
+    } else {
+      return invite;
+    }
+  },
   checkInfo: async (info) => {
     const row = await userModel.getInfoByJson(info);
     return !!row;

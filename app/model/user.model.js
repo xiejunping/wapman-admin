@@ -42,6 +42,13 @@ const user = DB => {
         logger(err)
       }
     },
+    async getRowsByJson(where) {
+      try {
+        return res = await DB.fetchAll(where)
+      } catch (err) {
+        logger(err)
+      }
+    }
   }
 };
 
