@@ -32,7 +32,8 @@ router.post('/register', c.invalid, c.checkCode, async (ctx, next) => {
     password: action.cryptPass(password),
     phone: phone,
     cid: inviteCode,
-    pid: invite
+    pid: invite,
+    all_pid: allPid
   });
 
   // 接口返回
