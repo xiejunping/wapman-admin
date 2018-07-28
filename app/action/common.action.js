@@ -17,7 +17,7 @@ const commonControl = {
     await RD.pexpireat(phone, Date.parse(new Date()) + codeExpire * 60000)
 
     try {
-      return await SMS.smsLogin(phone, code);
+      return process.env.NODE_ENV === 'production' ? await SMS.smsLogin(phone, code) : {result: 0};
     } catch (err) {
       logger(err);
     }
@@ -33,7 +33,7 @@ const commonControl = {
     await RD.pexpireat(phone, Date.parse(new Date()) + codeExpire * 60000)
 
     try {
-      return await SMS.smsPass(phone, code);
+      return process.env.NODE_ENV === 'production' ? await SMS.smsPass(phone, code) : {result: 0};
     } catch (err) {
       logger(err);
     }
@@ -49,7 +49,7 @@ const commonControl = {
     await RD.pexpireat(phone, Date.parse(new Date()) + codeExpire * 60000)
 
     try {
-      return await SMS.smsCheck(phone, code);
+      return process.env.NODE_ENV === 'production' ? await SMS.smsCheck(phone, code) : {result: 0};
     } catch (err) {
       logger(err);
     }

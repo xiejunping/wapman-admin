@@ -36,7 +36,7 @@ const userControl = {
    */
   calcInviteId: async (invite) => {
     if (!invite) return null;
-    const { all_pid } = await userModel.getInfoByJson({and: {cid: invite}});
+    const { all_pid } = await userModel.getInfoByJson({cid: invite});
     if (!!all_pid) {
       return `${invite},${all_pid}`;
     } else {
