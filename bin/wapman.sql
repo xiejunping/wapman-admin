@@ -9,6 +9,7 @@ CREATE TABLE `wap_user` (
   `sex` int(1) DEFAULT 0,
   `qq` varchar(15) DEFAULT NULL,
   `cid` varchar(20) DEFAULT NULL,
+  `is_setpass` int(1) NOT NULL DEFAULT 0,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `avatar` varchar(255) DEFAULT NULL,
   `pid` varchar(20) DEFAULT NULL,

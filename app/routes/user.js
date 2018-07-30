@@ -83,6 +83,33 @@ router.post('/login', c.invalid, async (ctx, next) => {
   return;
 });
 
+// 手机号登录
+router.post('/phone/login', c.invalid, c.oAuth, async (ctx, next) => {
+  const { phone } = ctx.request.body;
+  const client = ctx.request.headers['user-agent'];
+
+  const hasPhone = await action.checkInfo({phone});
+  if (!hasPhone) {
+    ctx.msg = '该手机号未注册';
+    return;
+  }
+
+  const user = await action.getInfoByPhone(phone);
+
+  delete user.password;
+  ctx.session.user = user;
+
+  // 记入登录
+  await actionLogin.setLoginInfo({
+    uid: user.id,
+    name: user.name,
+    client: client,
+    sessionId: user.sessionId
+  });
+  ctx.data = user;
+  return;
+});
+
 // 用户名是否存在
 router.get('/name', c.invalid, async (ctx, next) => {
   const { username } = ctx.request.query;
@@ -128,7 +155,7 @@ router.post('/modify/pass', c.oAuth, c.invalid, async (ctx, next) => {
 // 获得个人信息
 router.get('/info', c.oAuth, async (ctx, next) => {
   const { id } = ctx.session.user;
-
+  console.log(ctx.request);
   const user = await action.getInfoById(id);
   if (user) {
     delete user.password;
@@ -178,6 +205,12 @@ router.post('/update/avatar', c.oAuth, c.invalid, async (ctx, next) => {
 router.post('/change/phone', c.oAuth, c.invalid, c.checkCode, async (ctx, next) => {
   const { phone } = ctx.request.body;
   const { id } = ctx.session.user;
+
+  const hasPhone = await action.checkInfo({phone});
+  if (hasPhone) {
+    ctx.msg = '该手机号已被绑定，一个手机只能绑定一个账户';
+    return;
+  }
 
   const rs = await action.uploadUserInfo(id, { phone });
   if (rs.affectedRows === 1) {

@@ -11,9 +11,9 @@ const sess = app => {
     key: privateSession,
     maxAge: ttl,
     overwrite: true,
-    httpOnly: false,
+    httpOnly: true,
     signed: true,
-    rolling: false,
+    rolling: true,
     renew: false,
     store: new RedisStore({ host, port, password, ttl })
   };
