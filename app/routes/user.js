@@ -155,7 +155,7 @@ router.post('/modify/pass', c.oAuth, c.invalid, async (ctx, next) => {
 // 获得个人信息
 router.get('/info', c.oAuth, async (ctx, next) => {
   const { id } = ctx.session.user;
-  console.log(ctx.request);
+
   const user = await action.getInfoById(id);
   if (user) {
     delete user.password;
