@@ -8,7 +8,10 @@ const c = require('../controllers/decorator');
 router.prefix('/user');
 
 router.get('/', async (ctx, next) => {
-
+  ctx.type = 'html';
+  await ctx.render('index', {
+    title: 'John'
+  });
 });
 
 router.post('/register', c.invalid, c.checkCode, async (ctx, next) => {
@@ -76,6 +79,7 @@ router.post('/login', c.invalid, async (ctx, next) => {
       uid: user.id,
       name: user.name,
       client: client,
+      type: 'pass',
       sessionId: user.sessionId
     });
     ctx.data = user;
@@ -104,6 +108,7 @@ router.post('/phone/login', c.invalid, c.oAuth, async (ctx, next) => {
     uid: user.id,
     name: user.name,
     client: client,
+    type: 'phone',
     sessionId: user.sessionId
   });
   ctx.data = user;

@@ -27,6 +27,14 @@ const connect = app => {
   app.on('error', (err, ctx) => {
     console.error('server error', err, ctx)
   });
+  // app.on('missed', () => {
+  //   ctx.auth = '验证失败，请登陆'
+  //   console.error(ctx.auth)
+  // });
+  // app.on('expired', () => {
+  //   ctx.auth = '验证已过期，请重新登陆'
+  //   console.error(ctx.auth)
+  // });
 
   // 日志
   app.use(logger(log))
@@ -41,7 +49,7 @@ const connect = app => {
   app.use(cors({ maxAge: 3600, credentials: true }))
 
   // 模版
-  app.use(views(__dirname + '../app/views', {
+  app.use(views(path.join(__dirname, '../app/views'), {
     extension: 'pug'
   }))
 

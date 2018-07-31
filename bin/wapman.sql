@@ -27,6 +27,7 @@ CREATE TABLE `wap_login` (
   `name` varchar(20) DEFAULT NULL,
   `creat_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sessionId` varchar(64) DEFAULT NULL,
+  `type` varchar(15) NOT NULL,
   `client` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
