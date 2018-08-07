@@ -115,6 +115,28 @@ router.post('/phone/login', c.invalid, async (ctx, next) => {
   return;
 });
 
+// 退出登录
+router.get('/logout', c.oAuth, async (ctx, next) => {
+  const sessionId = ctx.cookies.get('SESSIONID');
+  const client = ctx.request.headers['user-agent'];
+  const { id, name } = ctx.session.user;
+
+  if (!!sessionId) {
+    const result = await actionLogin.storeDel(sessionId);
+    if (result) {
+      await actionLogin.setLogoutInfo({
+        uid: id,
+        name,
+        client: client,
+        type: '',
+        sessionId: sessionId
+      });
+      ctx.data = DateFmt.now();
+    } else ctx.msg = '删除会话失败';
+  } else ctx.msg = '找不到会话信息';
+  return;
+});
+
 // 用户名是否存在
 router.get('/name', c.invalid, async (ctx, next) => {
   const { username } = ctx.request.query;

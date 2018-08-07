@@ -1,3 +1,4 @@
+const async = require('async');
 const Pool = require('./pool');
 const pool = Pool.init();
 
@@ -11,6 +12,20 @@ class DB {
   constructor(tableName) {
     this.tableName = tableName;
     this.pool = pool;
+  }
+
+  /**
+   * 创建单个连接
+   * @returns {Promise<any>}
+   */
+  getConnection() {
+    const { pool } = this
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) reject(err)
+        else resolve(connection)
+      })
+    })
   }
 
   /**
@@ -178,6 +193,46 @@ class DB {
         if (error) {
           reject(error)
         } else resolve(results)
+      })
+    })
+  }
+
+  connectionQuery(connection, sql, callback) {
+    connection.query(sql, function (err, result) {
+      if (err) callback(err, null)
+      else callback(null, result)
+    })
+  }
+
+  transaction(connection, tasks) {
+    return new Promise((resolve, reject) => {
+      connection.beginTransaction(err => {
+        if (err) {
+          reject(err)
+          return
+        }
+        async.series(tasks, (error, result) => {
+          if (error) reject(error)
+          resolve(connection, result)
+        })
+      })
+    })
+  }
+
+  commit(connection) {
+    return new Promise((resolve, reject) => {
+      connection.commit(err => {
+        if (err) reject(err)
+        else resolve(connection)
+      })
+    })
+  }
+
+  rollback(connection) {
+    return new Promise(resolve => {
+      connection.rollback(() => {
+        connection.release()
+        resolve()
       })
     })
   }
