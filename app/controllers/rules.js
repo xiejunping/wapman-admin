@@ -1,4 +1,6 @@
 const rules = {
+  '/url/short': [
+    {name: 'address', require: true, min: 7, max: 255, desc: '链接地址'}],
   '/code/login': [
     {name: 'phone', require: true, pattern: '0?(13|14|15|17|18|19)[0-9]{9}$', desc: '手机号'}],
   '/code/check': [

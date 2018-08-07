@@ -3,6 +3,7 @@ const favicon = require('koa-favicon');
 const cors = require('koa2-cors');
 // const json = require('koa-json');
 const logger = require('koa-logger');
+const log4js = require('../bin/logs/log4js');
 const onError = require('koa-onerror');
 const bodyParser = require('koa-bodyparser');
 const koaStatic = require('koa-static');

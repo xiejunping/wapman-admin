@@ -1,4 +1,4 @@
-const log4js = require('../../bin/logs/log4js')
+const log4js = require('../../bin/logs/log4js');
 
 const dev = (str) => {
   console.log(str)
