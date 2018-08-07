@@ -3,18 +3,19 @@ const favicon = require('koa-favicon');
 const cors = require('koa2-cors');
 // const json = require('koa-json');
 const logger = require('koa-logger');
-const onerror = require('koa-onerror');
-const bodyparser = require('koa-bodyparser');
+const onError = require('koa-onerror');
+const bodyParser = require('koa-bodyparser');
 const koaStatic = require('koa-static');
 const views = require('koa-views');
 
 const resFormat = require('../app/controllers/responseFmt');
 const log = process.env.NODE_ENV === 'production' ? (str, args) => log4js.info(args) : '';
+const err = process.env.NODE_ENV === 'production' ? (err, ctx) => log4js.errLogger(ctx, err) : (err, ctx) => log4js.error(err, ctx);
 
 const connect = app => {
 
   // JSON
-  app.use(bodyparser({
+  app.use(bodyParser({
     formLimit: '1mb',
     enableTypes:['json', 'form', 'text']
   }));
@@ -23,10 +24,8 @@ const connect = app => {
   // app.use(json())
 
   // error-handling
-  onerror(app)
-  app.on('error', (err, ctx) => {
-    console.error('server error', err, ctx)
-  });
+  onError(app);
+  app.on('error', err);
   // app.on('missed', () => {
   //   ctx.auth = '验证失败，请登陆'
   //   console.error(ctx.auth)

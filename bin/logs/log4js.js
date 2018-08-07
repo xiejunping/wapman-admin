@@ -55,7 +55,7 @@ logger.console = str => {
 }
 
 logger.error = str => {
-  infoLogger.error(str)
+  errorLogger.error(str)
 }
 
 module.exports = logger
