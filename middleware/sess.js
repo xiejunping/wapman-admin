@@ -13,7 +13,7 @@ const sess = app => {
     overwrite: true,
     httpOnly: true,
     signed: true,
-    rolling: true,
+    rolling: false,
     renew: false,
     store: new RedisStore({ host, port, password, ttl })
   };

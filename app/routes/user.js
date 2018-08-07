@@ -88,7 +88,7 @@ router.post('/login', c.invalid, async (ctx, next) => {
 });
 
 // 手机号登录
-router.post('/phone/login', c.invalid, c.oAuth, async (ctx, next) => {
+router.post('/phone/login', c.invalid, async (ctx, next) => {
   const { phone } = ctx.request.body;
   const client = ctx.request.headers['user-agent'];
 
