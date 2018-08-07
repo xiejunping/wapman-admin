@@ -22,6 +22,7 @@ const rules = {
     {name: 'username', require: true, min: 3, max: 20, desc: '账号'},
     {name: 'password', require: true, min: 6, max: 20, desc: '密码'},
     {name: 'phone', require: true, pattern: '0?(13|14|15|17|18|19)[0-9]{9}$', desc: '手机号'},
+    {name: 'invite', min: 0, max: 6, desc: '邀请码'},
     {name: 'code', require: true, min: 6, max: 6, desc: '验证码'}],
   '/user/reset/pass': [
     {name: 'phone', require: true, pattern: '0?(13|14|15|17|18|19)[0-9]{9}$', desc: '手机号'},

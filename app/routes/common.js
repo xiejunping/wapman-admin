@@ -57,4 +57,4 @@ router.post('/code/check', c.invalid, async (ctx, next) => {
   } else ctx.throw('发送短信验证码失败', 400);
 });
 
-module.exports = router
+module.exports = router;

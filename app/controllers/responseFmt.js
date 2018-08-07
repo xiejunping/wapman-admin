@@ -5,7 +5,7 @@ const response_formatter = async (ctx, next) => {
   //先去执行路由
   await next();
 
-  if (ctx.type === 'html') return;
+  if (ctx.type) return;
 
   //如果有返回数据，将返回数据添加到data中
   if (ctx.msg !== undefined) {
