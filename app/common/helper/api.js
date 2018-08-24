@@ -1,4 +1,5 @@
 const axios = require('axios');
+const logger = require('../../controllers/logger')
 
 class ClientApi {
   constructor () {
@@ -15,9 +16,12 @@ class ClientApi {
 
   async fetch (url, params) {
     try {
+      logger(url);
+      logger(params);
       return await axios(url, { params });
     } catch (e) {
-      throw new Error(`FETCH请求错误: ${e}`);
+      // throw new Error(`FETCH请求错误: ${e}`);
+      logger(e);
     }
   }
 }
