@@ -1,4 +1,3 @@
-const axios = require('axios');
 const router = require('koa-router')();
 const action = require('../action/common.action');
 const actionUser = require('../action/user.action');
@@ -6,7 +5,6 @@ const DateFmt = require('../utils/date');
 const logger = require('../controllers/logger');
 
 const c = require('../controllers/decorator');
-const { appid, secret } = require('../common/config/weixin');
 
 // 手机号是否存在
 router.get('/phone/check', c.invalid, async (ctx, next) => {
@@ -62,48 +60,47 @@ router.post('/code/check', c.invalid, async (ctx, next) => {
 // 生成短链接
 router.get('/url/short', c.invalid, async (ctx, next) => {
   const { address } = ctx.request.query;
-  const url = 'https://api.weibo.com/2/short_url/shorten.json';
 
-  return axios(url, {
-    headers: {
-      referer: 'https://api.weibo.com',
-      host: 'api.weibo.com'
-    },
-    params: {
-      source: 2849184197,
-      url_long: address
-    }
-  }).then(response => {
-    if (response.status === 200 && response.data.urls && response.data.urls.length) {
-      const { url_short, url_long, result } = response.data.urls[0];
-      ctx.data = { url_short, url_long, result };
-      return;
-    } else ctx.throw(response.statusText, 400);
-  }).catch(e => {
-    logger(e);
-  });
+  const response = await action.creatShortURL(address);
+
+  if(!response) {
+    ctx.msg = '请求第三方接口错误';
+    return;
+  }
+
+  if (response.status === 200 && response.data.urls && response.data.urls.length) {
+    const { url_short, url_long, result } = response.data.urls[0];
+    ctx.data = { url_short, url_long, result };
+    return;
+  } else ctx.throw(response.statusText, 400);
 });
 
-// 微信获取access_token
-router.get('/weixin/code', c.invalid, async (ctx, next) => {
+// 扫码注册
+router.get('/weixin/register', c.invalid, async (ctx, next) => {
   const { code, status } = ctx.request.query;
-  const url = 'https://api.weixin.qq.com/sns/oauth2/access_token';
 
-  return axios(url, {
-    params: {
-      appid,
-      secret,
-      code,
-      grant_type: 'authorization_code'
-    }
-  }).then(response => {
-    if (response.status === 200 && response.data) {
-      ctx.data = response.data;
+  // 微信获取access_token
+  const response = await action.getAccessToken(code);
+
+  if(!response) {
+    ctx.msg = '微信获取access_token错误';
+    return;
+  }
+
+  // 微信接口调用依赖
+  if (response.status === 200 && response.data) {
+    const { access_token, openid} = response.data;
+
+    const userInfo = await action.getUserInfo(access_token, openid);
+    if(!userInfo) {
+      ctx.msg = '微信获取个人信息错误';
       return;
-    } else ctx.throw(response.statusText, 400);
-  }).catch(e => {
-    logger(e);
-  });
+    }
+
+    ctx.data = userInfo;
+    return;
+
+  } else ctx.throw(response.statusText, 400);
 });
 
 module.exports = router;
