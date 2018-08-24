@@ -1,4 +1,7 @@
 const rules = {
+  '/weixin/code': [
+    {name: 'code', require: true, min: 4, max: 100, desc: '微信获取CODE'},
+    {name: 'status', min: 0, max: 100, desc: '自定义参数'}],
   '/url/short': [
     {name: 'address', require: true, min: 7, max: 255, desc: '链接地址'}],
   '/code/login': [

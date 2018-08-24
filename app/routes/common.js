@@ -6,6 +6,7 @@ const DateFmt = require('../utils/date');
 const logger = require('../controllers/logger');
 
 const c = require('../controllers/decorator');
+const { appid, secret } = require('../common/config/weixin');
 
 // 手机号是否存在
 router.get('/phone/check', c.invalid, async (ctx, next) => {
@@ -76,6 +77,28 @@ router.get('/url/short', c.invalid, async (ctx, next) => {
     if (response.status === 200 && response.data.urls && response.data.urls.length) {
       const { url_short, url_long, result } = response.data.urls[0];
       ctx.data = { url_short, url_long, result };
+      return;
+    } else ctx.throw(response.statusText, 400);
+  }).catch(e => {
+    logger(e);
+  });
+});
+
+// 微信获取access_token
+router.get('/weixin/code', c.invalid, async (ctx, next) => {
+  const { code, status } = ctx.request.query;
+  const url = 'https://api.weixin.qq.com/sns/oauth2/access_token';
+
+  return axios(url, {
+    params: {
+      appid,
+      secret,
+      code,
+      grant_type: 'authorization_code'
+    }
+  }).then(response => {
+    if (response.status === 200 && response.data) {
+      ctx.data = response.data;
       return;
     } else ctx.throw(response.statusText, 400);
   }).catch(e => {
