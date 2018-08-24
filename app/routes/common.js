@@ -87,6 +87,9 @@ router.get('/weixin/register', c.invalid, async (ctx, next) => {
     return;
   }
 
+  ctx.data = response.data;
+  return;
+
   // 微信接口调用依赖
   if (response.status === 200 && response.data) {
     const { access_token, openid} = response.data;

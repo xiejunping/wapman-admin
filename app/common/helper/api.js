@@ -9,12 +9,11 @@ class ClientApi {
     try {
       return await axios(url, { headers, params });
     } catch (e) {
-      throw `第三方请求未知错误${JSON.stringify(e)}`;
+      throw `第三方请求未知错误${e}`;
     }
   }
 
   async fetch (url, params) {
-    console.log(params);
     try {
       return await axios(url, { params });
     } catch (e) {
