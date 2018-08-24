@@ -81,7 +81,7 @@ router.get('/weixin/register', c.invalid, async (ctx, next) => {
 
   // 微信获取access_token
   const response = await action.getAccessToken(code);
-
+  logger(response.data)
   if(!response) {
     ctx.msg = '微信获取access_token错误';
     return;
@@ -93,7 +93,6 @@ router.get('/weixin/register', c.invalid, async (ctx, next) => {
 
     if (access_token && openid) {
       const userInfo = await action.getUserInfo(access_token, openid);
-      logger(userInfo)
       if(!userInfo) {
         ctx.msg = '微信获取个人信息错误';
         return;
