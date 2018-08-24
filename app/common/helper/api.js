@@ -21,7 +21,7 @@ class ClientApi {
       return await axios(url, { params });
     } catch (e) {
       // throw new Error(`FETCH请求错误: ${e}`);
-      logger(e);
+      // logger(e);
     }
   }
 }
