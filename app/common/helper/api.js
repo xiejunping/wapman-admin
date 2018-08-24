@@ -9,7 +9,7 @@ class ClientApi {
     try {
       return await axios(url, { headers, params });
     } catch (e) {
-      throw `第三方请求未知错误${e}`;
+      throw new Error(`第三方请求未知错误${e}`);
     }
   }
 
@@ -17,7 +17,7 @@ class ClientApi {
     try {
       return await axios(url, { params });
     } catch (e) {
-      throw `FETCH请求错误: ${e}`;
+      throw new Error(`FETCH请求错误: ${e}`);
     }
   }
 }
