@@ -14,10 +14,11 @@ class ClientApi {
   }
 
   async fetch (url, params) {
+    console.log(params);
     try {
       return await axios(url, { params });
     } catch (e) {
-      throw `FETCH请求错误: ${JSON.stringify(e)}`;
+      throw `FETCH请求错误: ${e}`;
     }
   }
 }

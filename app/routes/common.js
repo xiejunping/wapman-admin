@@ -91,15 +91,17 @@ router.get('/weixin/register', c.invalid, async (ctx, next) => {
   if (response.status === 200 && response.data) {
     const { access_token, openid} = response.data;
 
-    const userInfo = await action.getUserInfo(access_token, openid);
-    if(!userInfo) {
-      ctx.msg = '微信获取个人信息错误';
+    console.log(response.data)
+    if (access_token && openid) {
+      const userInfo = await action.getUserInfo(access_token, openid);
+      if(!userInfo) {
+        ctx.msg = '微信获取个人信息错误';
+        return;
+      }
+
+      ctx.data = userInfo;
       return;
-    }
-
-    ctx.data = userInfo;
-    return;
-
+    } else ctx.throw(response.statusText, 400);
   } else ctx.throw(response.statusText, 400);
 });
 
