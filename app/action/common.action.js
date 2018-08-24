@@ -100,7 +100,7 @@ const commonControl = {
     try {
       return await api.fetch(url, { access_token: access_token, openid });
     } catch (err) {
-      logger(err);
+      // logger(err);
     }
   }
 };
