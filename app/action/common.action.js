@@ -98,7 +98,7 @@ const commonControl = {
     const url = 'https://api.weixin.qq.com/sns/userinfo';
 
     try {
-      return await api.fetch(url, { access_token, openid });
+      return await api.fetch(url, { access_token: access_token, openid });
     } catch (err) {
       logger(err);
     }
