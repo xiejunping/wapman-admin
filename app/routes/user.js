@@ -74,6 +74,8 @@ router.post('/login', c.invalid, async (ctx, next) => {
     delete user.password;
     ctx.session.user = user;
 
+    user.sessionId = action.cryptSession(user.name + '-password-' + DateFmt.now());
+
     // 记入登录
     await actionLogin.setLoginInfo({
       uid: user.id,
@@ -82,7 +84,14 @@ router.post('/login', c.invalid, async (ctx, next) => {
       type: 'pass',
       sessionId: user.sessionId
     });
-    ctx.data = user;
+    ctx.data = {
+      id: user.id,
+      name: user.name,
+      client: client,
+      type: 'password',
+      token: user.sessionId,
+      time: DateFmt.now()
+    };
   }
   return;
 });
@@ -103,6 +112,8 @@ router.post('/phone/login', c.invalid, async (ctx, next) => {
   delete user.password;
   ctx.session.user = user;
 
+  user.sessionId = action.cryptSession(user.name + '-phone-' + DateFmt.now());
+
   // 记入登录
   await actionLogin.setLoginInfo({
     uid: user.id,
@@ -111,7 +122,14 @@ router.post('/phone/login', c.invalid, async (ctx, next) => {
     type: 'phone',
     sessionId: user.sessionId
   });
-  ctx.data = user;
+  ctx.data = {
+    id: user.id,
+    name: user.name,
+    client: client,
+    type: 'code',
+    token: user.sessionId,
+    time: DateFmt.now()
+  };
   return;
 });
 
