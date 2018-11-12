@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=5000 node bin/www",
+    "start": "cross-env PORT=5000 node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
     "prd": "cross-env NODE_ENV=production pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
