@@ -10,7 +10,7 @@ const dev = {
   errLogin: 180,
   codeExpire: 30,
   codeValid: 5,
-  sessionExprie: 1440 * 7,      // login session expire
+  sessionExprie: 1440 * 1,      // login session expire
   secret: 'WAPMAN'              // user pass secret
 }
 

@@ -59,6 +59,9 @@ const userControl = {
   cryptPass: (password) => {
     return crypto.md5(crypto.aesDecrypt(password)).toString();
   },
+  cryptSession: (hash) => {
+    return crypto.md5(hash).toString();
+  },
   /**
    * 是否锁住
    * @param name
