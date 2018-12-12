@@ -23,3 +23,5 @@ router.get('/:id', c.oAuth, async (ctx, next) => {
 
 
 });
+
+module.exports = router;

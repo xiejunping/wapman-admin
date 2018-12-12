@@ -44,7 +44,25 @@ const rules = {
     {name: 'email', min: 0, max: 20, desc: '邮箱'},
     {name: 'sex', min: 0, max: 20, desc: '性别'}],
   '/user/update/avatar': [
-    {name: 'avatar', require: true, min: 0, max: 22500000000, desc: '头像'}]
+    {name: 'avatar', require: true, min: 0, max: 22500000000, desc: '头像'}],
+  '/menu/add': [
+    {name: 'pid', require: true, min: 1, max: 11, desc: '上级ID'},
+    {name: 'name', min: 0, max: 20, desc: '路由名称'},
+    {name: 'title',  min: 0, max: 20, desc: '菜单名称'},
+    {name: 'path', min: 0, max: 20, desc: '菜单链接'},
+    {name: 'icon', min: 0, max: 20, desc: '菜单图标'},
+    {name: 'component', min: 0, max: 20, desc: '菜单组件'},
+    {name: 'status', min: 0, max: 1, desc: '菜单状态'}
+  ],
+  '/menu/edit': [
+    {name: 'id', require: true, min: 1, max: 11, desc: '菜单ID'},
+    {name: 'pid', require: true, min: 1, max: 11, desc: '上级ID'},
+    {name: 'name', min: 0, max: 20, desc: '路由名称'},
+    {name: 'title',  min: 0, max: 20, desc: '菜单名称'},
+    {name: 'path', min: 0, max: 20, desc: '菜单链接'},
+    {name: 'icon', min: 0, max: 20, desc: '菜单图标'},
+    {name: 'component', min: 0, max: 20, desc: '菜单组件'},
+    {name: 'status', min: 0, max: 1, desc: '菜单状态'}]
 };
 
 module.exports = rules;

@@ -19,7 +19,14 @@ const user = DB => {
     },
     async delete(id) {
       try {
-        return res = await DB.delete({id})
+        return res = await DB.remove({id})
+      } catch (err) {
+        logger(err)
+      }
+    },
+    async getInfoById (id) {
+      try {
+        return res = await DB.fetchRow({id})
       } catch (err) {
         logger(err)
       }

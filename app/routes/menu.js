@@ -16,10 +16,11 @@ router.get('/', c.oAuth, async (ctx, next) => {
   } else ctx.throw('获取树形菜单失败', 400);
 });
 
-router.post('/add', c.oAuth, async (ctx, next) => {
-  const { pid, name, title, path, icon, component } = ctx.request.body;
-  const menu = await action.addMenu({ pid, name, title, path, icon, component });
+router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
+  const { pid, name, title, path, icon, component, status } = ctx.request.body;
 
+  const { level } = await action.getMenuInfo(pid);
+  const menu = await action.addMenu({ pid, name, title, path, icon, level: level + 1, component, status });
   if (menu.insertId) {
     logger(`菜单标题-${title}-添加成功：id为${menu.insertId}`);
     ctx.data = DateFmt.now();
@@ -31,7 +32,7 @@ router.post('/add', c.oAuth, async (ctx, next) => {
 
 router.delete('/del/:id', c.oAuth, async (ctx, next) => {
   const { id } = ctx.params;
-  const rs = await action.delMenu(id)
+  const rs = await action.delMenu(id);
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();
     return;
@@ -40,10 +41,17 @@ router.delete('/del/:id', c.oAuth, async (ctx, next) => {
   }
 });
 
-router.get('/edit', c.oAuth, async (ctx, next) => {
-  const { id } = ctx.session.user;
+router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
+  const { id, pid, name, title, path, icon, component, status } = ctx.request.body;
 
-
+  const { level } = await action.getMenuInfo(pid);
+  const rs = await action.editMenu(id, { pid, name, title, path, level: level + 1, icon, component, status });
+  if (rs.affectedRows === 1) {
+    ctx.data = DateFmt.now();
+    return;
+  } else {
+    ctx.throw('菜单更新失败', 400);
+  }
 });
 
 router.get('/order', c.oAuth, async (ctx, next) => {
@@ -51,3 +59,5 @@ router.get('/order', c.oAuth, async (ctx, next) => {
 
 
 });
+
+module.exports = router;
