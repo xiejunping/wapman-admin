@@ -62,7 +62,18 @@ const rules = {
     {name: 'path', min: 0, max: 20, desc: '菜单链接'},
     {name: 'icon', min: 0, max: 20, desc: '菜单图标'},
     {name: 'component', min: 0, max: 20, desc: '菜单组件'},
-    {name: 'status', min: 0, max: 1, desc: '菜单状态'}]
+    {name: 'status', min: 0, max: 1, desc: '菜单状态'}
+  ],
+  '/dept/add': [
+    {name: 'pid', require: true, min: 1, max: 11, desc: '上级ID'},
+    {name: 'name', min: 0, max: 20, desc: '分组名称'},
+    {name: 'status', min: 0, max: 1, desc: '分组状态'}
+  ],
+  '/dept/edit': [
+    {name: 'id', require: true, min: 1, max: 11, desc: '菜单ID'},
+    {name: 'pid', require: true, min: 1, max: 11, desc: '上级ID'},
+    {name: 'name', min: 0, max: 20, desc: '分组名称'},
+    {name: 'status', min: 0, max: 1, desc: '分组状态'}]
 };
 
 module.exports = rules;

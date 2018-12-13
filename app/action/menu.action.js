@@ -16,13 +16,18 @@ const menu = {
     return await menuModel.update(id, info)
   },
   async getTreeMenu () {
-    const rows = await menuModel.getAll({status: 1});
+    const sqlMod = 'SELECT * FROM `wap_menu`';
+    const rows = await menuModel.getAll(sqlMod);
 
     const treeMenu = this.treeSortCreat(rows);
     return treeMenu;
   },
   async getMenuInfo (id) {
     return await menuModel.getInfoById(id);
+  },
+  async getMenuLevel (id) {
+    const { level } = await menuModel.getInfoById(id);
+    return level
   },
   filterArray (list, level, pid) {
     const arr = list.filter(ret => ret.level === level && ret.pid === pid);
@@ -43,6 +48,9 @@ const menu = {
       return ret;
     });
     return newArray1;
+  },
+  async getChild (pid) {
+    return await menuModel.getRows({pid})
   },
   async excute () {
     // 事务
