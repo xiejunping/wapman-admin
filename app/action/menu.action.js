@@ -5,7 +5,7 @@ const menuModel = require('../model/menu.model')(DB);
 const logger = require('../controllers/logger');
 const utils = require('../utils/index');
 
-const menu = {
+const action = {
   async addMenu (info) {
     return await menuModel.add(info);
   },
@@ -58,4 +58,4 @@ const menu = {
   },
 };
 
-module.exports = menu;
+module.exports = action;

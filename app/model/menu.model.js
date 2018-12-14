@@ -1,6 +1,6 @@
 const logger = require('../controllers/logger');
 
-const user = DB => {
+const model = DB => {
 
   return {
     async add(info) {
@@ -48,4 +48,4 @@ const user = DB => {
   }
 }
 
-module.exports = user;
+module.exports = model;

@@ -73,7 +73,24 @@ const rules = {
     {name: 'id', require: true, min: 1, max: 11, desc: '菜单ID'},
     {name: 'pid', require: true, min: 1, max: 11, desc: '上级ID'},
     {name: 'name', min: 0, max: 20, desc: '分组名称'},
-    {name: 'status', min: 0, max: 1, desc: '分组状态'}]
+    {name: 'status', min: 0, max: 1, desc: '分组状态'}
+  ],
+  '/role/': [
+    {name: 'gid', require: true, min: 1, max: 11, desc: '角色分组ID'},
+    {name: 'pageIndex', min: 1, desc: '当前页码'},
+    {name: 'pageSize', min: 1, desc: '分页大小'}
+  ],
+  '/role/add': [
+    {name: 'gid', require: true, min: 1, max: 11, desc: '角色分组ID'},
+    {name: 'name',  min: 0, max: 20, desc: '角色名称'},
+    {name: 'status', min: 0, max: 1, desc: '角色状态'}
+  ],
+  '/role/edit': [
+    {name: 'id', require: true, min: 1, max: 11, desc: '角色ID'},
+    {name: 'gid', require: true, min: 1, max: 11, desc: '角色分组ID'},
+    {name: 'name',  min: 0, max: 20, desc: '角色名称'},
+    {name: 'status', min: 0, max: 1, desc: '角色状态'}
+  ]
 };
 
 module.exports = rules;

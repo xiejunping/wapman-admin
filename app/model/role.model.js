@@ -44,6 +44,14 @@ const model = DB => {
       } catch (err) {
         logger(err)
       }
+    },
+    async fetchAll(info) {
+      try {
+        const {tableName, selectStr = '*', whereJson, orderByJson = '', limitArr = ''} = info
+        return res = await DB.fetchAll(tableName, selectStr, whereJson, orderByJson, limitArr)
+      } catch (err) {
+        logger(err)
+      }
     }
   }
 }

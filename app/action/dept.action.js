@@ -5,7 +5,7 @@ const deptModel = require('../model/dept.model')(DB);
 const logger = require('../controllers/logger');
 const utils = require('../utils/index');
 
-const dept = {
+const action = {
   async addDept (info) {
     return await deptModel.add(info);
   },
@@ -53,4 +53,4 @@ const dept = {
   }
 }
 
-module.exports = dept;
+module.exports = action;

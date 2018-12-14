@@ -2,7 +2,7 @@ const Mysql = require('../common/helper/mysql');
 const DB = new Mysql('wap_unit');
 const unitModel = require('../model/unit.model')(DB);
 
-const unit = {
+const action = {
   /**
    * 新增记录
    * @param info
@@ -17,4 +17,4 @@ const unit = {
   },
 };
 
-module.exports = unit;
+module.exports = action;
