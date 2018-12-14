@@ -63,6 +63,7 @@ router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
 router.patch('/remove', c.oAuth, async (ctx, next) => {
   const { id, gid } = ctx.request.body;
   console.log(id, gid)
+  const rs = await action.removeRole(id, gid);
   // const rs = await action.editRole(id, { gid, name, status });
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();

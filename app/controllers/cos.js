@@ -23,8 +23,10 @@ class Cos {
         Body: stream
       }, (err, data) => {
         if(err) {
+          logger(`腾讯云存储上传头像错误-${JSON.stringify(err)}`)
           reject(err);
         } else {
+          logger(`腾讯云存储上传头像成功${prefix}/${name}.png`)
           resolve(data);
         }
       });

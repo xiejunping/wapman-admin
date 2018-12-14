@@ -5,6 +5,8 @@ const roleModel = require('../model/role.model')(DB);
 const logger = require('../controllers/logger');
 const utils = require('../utils/index');
 
+const Mailer = require('../controllers/mailer')
+
 const action = {
   async addRole (info) {
     return await roleModel.add(info)
@@ -39,6 +41,13 @@ const action = {
   },
   async getRolesByJson (info) {
     return await roleModel.getRows(info);
+  },
+  async removeRole (id, gid) {
+    try {
+      return await Mailer.sendMail('xiejunping@caohua.com', 'nodejs服务器发送邮件', '<b>Hello world?</b>');
+    } catch (error) {
+      logger(error)
+    }
   }
 }
 
