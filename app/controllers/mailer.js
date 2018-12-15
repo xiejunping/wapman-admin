@@ -22,10 +22,10 @@ class Mailer {
     return new Promise((resolve, reject) =>{
       this.Mailer.sendMail(option, (error, info) => {
         if (error) {
-          logger('')
+          logger.console('')
           reject(error);
         } else {
-          logger('')
+          logger.console('')
           resolve(info)
         }
       })

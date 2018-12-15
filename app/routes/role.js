@@ -29,7 +29,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
 
   const role = await action.addRole({ gid, name, status });
   if (role.insertId) {
-    logger(`角色-${name}-添加成功：id为${role.insertId}`);
+    logger.console(`角色-${name}-添加成功：id为${role.insertId}`);
     ctx.data = DateFmt.now();
     return
   } else {

@@ -21,7 +21,7 @@ router.post('/phone/check/code', c.invalid, c.checkCode, async (ctx, next) => {
   if (!!user) {
     ctx.data = DateFmt.now();
     return;
-  } else logger(`手机号${phone}验证验证码失败`);
+  } else logger.console(`手机号${phone}验证验证码失败`);
 });
 
 // 获取短信验证码 login
@@ -81,7 +81,7 @@ router.get('/weixin/register', c.invalid, async (ctx, next) => {
 
   // 微信获取access_token
   const response = await action.getAccessToken(code);
-  logger(response.data)
+  logger.console(response.data)
   if(!response) {
     ctx.msg = '微信获取access_token错误';
     return;

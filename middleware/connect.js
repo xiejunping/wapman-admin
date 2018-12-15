@@ -3,7 +3,7 @@ const favicon = require('koa-favicon');
 const cors = require('koa2-cors');
 // const json = require('koa-json');
 const logger = require('koa-logger');
-const log4js = require('../bin/logs/log4js');
+const log4js = require('../app/controllers/logger');
 const onError = require('koa-onerror');
 const bodyParser = require('koa-bodyparser');
 const koaStatic = require('koa-static');
@@ -24,9 +24,10 @@ const connect = app => {
   // 只接收json content-type
   // app.use(json())
 
-  // error-handling
+  // 捕获错误日志
   onError(app);
   app.on('error', err);
+
   // app.on('missed', () => {
   //   ctx.auth = '验证失败，请登陆'
   //   console.error(ctx.auth)

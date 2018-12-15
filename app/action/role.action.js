@@ -46,7 +46,7 @@ const action = {
     try {
       return await Mailer.sendMail('xiejunping@caohua.com', 'nodejs服务器发送邮件', '<b>Hello world?</b>');
     } catch (error) {
-      logger(error)
+      logger.error(error)
     }
   }
 }

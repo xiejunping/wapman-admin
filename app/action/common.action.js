@@ -21,7 +21,7 @@ const commonControl = {
     try {
       return process.env.NODE_ENV === 'production' ? await SMS.smsLogin(phone, code) : {result: 0};
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   },
   /**
@@ -37,7 +37,7 @@ const commonControl = {
     try {
       return process.env.NODE_ENV === 'production' ? await SMS.smsPass(phone, code) : {result: 0};
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   },
   /**
@@ -53,7 +53,7 @@ const commonControl = {
     try {
       return process.env.NODE_ENV === 'production' ? await SMS.smsCheck(phone, code) : {result: 0};
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   },
   /**
@@ -71,7 +71,7 @@ const commonControl = {
     try {
       return await api.referer(url, headers, { source: 2849184197, url_long: address });
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   },
   /**
@@ -85,7 +85,7 @@ const commonControl = {
     try {
       return await api.fetch(url, { appid, secret, code, grant_type: 'authorization_code' });
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   },
   /**
@@ -100,7 +100,7 @@ const commonControl = {
     try {
       return await api.fetch(url, { access_token, openid });
     } catch (err) {
-      logger(err);
+      logger.error(err);
     }
   }
 };

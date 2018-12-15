@@ -41,7 +41,7 @@ router.post('/register', c.invalid, c.checkCode, async (ctx, next) => {
 
   // 接口返回
   if (user.insertId) {
-    logger(`会员${username}注册成功：id为${user.insertId}`);
+    logger.console(`会员${username}注册成功：id为${user.insertId}`);
     ctx.data = DateFmt.now();
     return;
   } else {
@@ -174,7 +174,7 @@ router.post('/reset/pass', c.invalid, async (ctx, next) => {
     ctx.data = DateFmt.now();
     return;
   } else {
-    logger(`${name}重置密码错误 ${DateFmt.now()}`);
+    logger.console(`${name}重置密码错误 ${DateFmt.now()}`);
     ctx.throw('重置密码错误', 400);
   }
 });
@@ -262,7 +262,7 @@ router.post('/change/phone', c.oAuth, c.invalid, c.checkCode, async (ctx, next) 
     ctx.data = DateFmt.now();
     return;
   } else {
-    logger(`${id}更换手机号为${phone}失败 ${DateFmt.now()}`);
+    logger.console(`${id}更换手机号为${phone}失败 ${DateFmt.now()}`);
     ctx.throw('更换手机号失败', 400);
   }
 });

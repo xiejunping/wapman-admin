@@ -16,7 +16,7 @@ const login = DB => {
       try {
         return res = await DB.insert(info);
       } catch (err) {
-        logger(err);
+        logger.error(err)
       }
     }
   };

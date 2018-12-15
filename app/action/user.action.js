@@ -19,7 +19,7 @@ const userControl = {
       const invite = utils.randomNumber(6);
       const userInfo = await userModel.getInfoByJson({cid: invite});
       if (!!userInfo) {
-        logger('生成邀请码重复存在: ' + invite);
+        logger.console('生成邀请码重复存在: ' + invite);
         await getInvite();
       } else {
         return invite;
@@ -52,7 +52,7 @@ const userControl = {
     if (Boolean(row)) {
       return row.password === password ? row : null;
     } else {
-      logger(`验证密码时找不到用户信息：${name}`);
+      logger.console(`验证密码时找不到用户信息：${name}`);
       return;
     }
   },

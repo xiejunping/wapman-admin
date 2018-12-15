@@ -7,42 +7,42 @@ const model = DB => {
       try {
         return res = await DB.insert(info)
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async update(id, info) {
       try {
         return res = await DB.update({id}, info)
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async delete(id) {
       try {
         return res = await DB.remove({id})
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async getInfoById (id) {
       try {
         return res = await DB.fetchRow({id})
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async getRows (info) {
       try {
         return res = await DB.fetchRows(info)
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async getAll(sql) {
       try {
         return res = await DB.queryStr(sql)
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     },
     async fetchAll(info) {
@@ -50,7 +50,7 @@ const model = DB => {
         const {tableName, selectStr = '*', whereJson, orderByJson = '', limitArr = ''} = info
         return res = await DB.fetchAll(tableName, selectStr, whereJson, orderByJson, limitArr)
       } catch (err) {
-        logger(err)
+        logger.error(err)
       }
     }
   }

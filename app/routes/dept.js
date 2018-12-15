@@ -23,7 +23,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   else level = await action.getDeptLevel(pid);
   const dept = await action.addDept({ pid, name, level: ++level, status });
   if (dept.insertId) {
-    logger(`分组-${name}-添加成功：id为${dept.insertId}`);
+    logger.console(`分组-${name}-添加成功：id为${dept.insertId}`);
     ctx.data = DateFmt.now();
     return
   } else {

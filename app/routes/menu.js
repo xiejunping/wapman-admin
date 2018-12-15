@@ -24,7 +24,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   else level = await action.getMenuLevel(pid);
   const menu = await action.addMenu({ pid, name, title, path, icon, level: ++level, component, status });
   if (menu.insertId) {
-    logger(`菜单标题-${title}-添加成功：id为${menu.insertId}`);
+    logger.console(`菜单标题-${title}-添加成功：id为${menu.insertId}`);
     ctx.data = DateFmt.now();
     return;
   } else {

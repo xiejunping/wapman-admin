@@ -8,16 +8,16 @@ const database = app => {
 
   // 建立连接打印信息
   pool.getConnection((error, connection) => {
-    if (error) logger(`Mysql Connected failed`)
-    else if(connection) logger(`Mysql Connected to MongoDB`)
+    if (error) logger.console(`Mysql Connected failed`)
+    else if(connection) logger.console(`Mysql Connected to MongoDB`)
   })
 
   client.on('connect', () => {
-    logger(`Redis connect Successful`)
+    logger.console(`Redis connect Successful`)
   })
 
   client.on('error', (err) => {
-    logger(`Redis throw Error: ${err}`)
+    logger.console(`Redis throw Error: ${err}`)
   })
 }
 

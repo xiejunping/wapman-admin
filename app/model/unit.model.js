@@ -16,7 +16,7 @@ const unit = DB => {
       try {
         return res = await DB.insert(info);
       } catch (err) {
-        logger(err);
+        logger.error(err)
       }
     },
     /**
@@ -43,7 +43,7 @@ const unit = DB => {
       }).then(con => {
         con.release();
       }).catch(err => {
-        logger(err);
+        logger.error(err);
         DB.rollback(connection);
       });
     },

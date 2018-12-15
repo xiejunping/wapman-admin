@@ -53,7 +53,7 @@ class SMS {
       const params = [code, expire]
       return await this._sendWithParam(phone, params, templateId)
     } catch (err) {
-      logger(`sms_err: ${err}`)
+      logger.console(`sms_err: ${err}`)
     }
   }
 
@@ -62,7 +62,7 @@ class SMS {
     try {
       return await this._send(phone, msg)
     } catch (err) {
-      logger(`sms_err: ${err}`)
+      logger.console(`sms_err: ${err}`)
     }
   }
 
