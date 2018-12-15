@@ -1,7 +1,7 @@
 const path = require('path');
 const favicon = require('koa-favicon');
 const cors = require('koa2-cors');
-// const json = require('koa-json');
+const json = require('koa-json');
 const logger = require('koa-logger');
 const log4js = require('../app/controllers/logger');
 const onError = require('koa-onerror');
@@ -21,8 +21,8 @@ const connect = app => {
     enableTypes:['json', 'form', 'text']
   }));
 
-  // 只接收json content-type
-  // app.use(json())
+  // 可接收json content-type
+  app.use(json());
 
   // 捕获错误日志
   onError(app);
