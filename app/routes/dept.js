@@ -18,7 +18,7 @@ router.get('/', c.oAuth, async (ctx, next) => {
 router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   const { pid, name, status } = ctx.request.body;
 
-  let level
+  let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getDeptLevel(pid);
   const dept = await action.addDept({ pid, name, level: ++level, status });
@@ -56,7 +56,7 @@ router.delete('/del/:id', c.oAuth, async (ctx, next) => {
 router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
   const { id, pid, name, status } = ctx.request.body;
 
-  let level
+  let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getDeptLevel(pid);
   const rs = await action.editDept(id, { pid, name, level: ++level, status });

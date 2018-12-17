@@ -90,6 +90,23 @@ const rules = {
     {name: 'gid', require: true, min: 1, max: 11, desc: '角色分组ID'},
     {name: 'name',  min: 0, max: 20, desc: '角色名称'},
     {name: 'status', min: 0, max: 1, desc: '角色状态'}
+  ],
+  '/access/add': [
+    {name: 'pid', require: true, min: 1, max: 11, desc: '权限上级ID'},
+    {name: 'mid', require: true, min: 1, max: 11, desc: '菜单ID'},
+    {name: 'type', min: 1, desc: '权限类型'},
+    {name: 'name', min: 0, max: 20, desc: '权限名称'},
+    {name: 'urls', min: 1, max: 20, desc: '权限路径'},
+    {name: 'status', min: 0, max: 1, desc: '权限状态'}
+  ],
+  '/access/edit': [
+    {name: 'id', require: true, min: 1, max: 11, desc: '权限ID'},
+    {name: 'pid', require: true, min: 1, max: 11, desc: '权限上级ID'},
+    {name: 'mid', require: true, min: 1, max: 11, desc: '菜单ID'},
+    {name: 'type', min: 1, desc: '权限类型'},
+    {name: 'name',  min: 0, max: 20, desc: '权限名称'},
+    {name: 'urls', min: 1, max: 20, desc: '权限路径'},
+    {name: 'status', min: 0, max: 1, desc: '权限状态'}
   ]
 };
 

@@ -46,6 +46,6 @@ const model = DB => {
       }
     }
   }
-};
+}
 
 module.exports = model;

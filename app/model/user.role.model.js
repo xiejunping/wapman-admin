@@ -24,9 +24,9 @@ const model = DB => {
         logger.error(err)
       }
     },
-    async getInfoById (id) {
+    async getInfoByJson (info) {
       try {
-        return res = await DB.fetchRow({id})
+        return res = await DB.fetchRow(info)
       } catch (err) {
         logger.error(err)
       }
@@ -44,8 +44,16 @@ const model = DB => {
       } catch (err) {
         logger.error(err)
       }
+    },
+    async fetchAll(info) {
+      try {
+        const {tableName, selectStr = '*', whereJson, orderByJson = '', limitArr = ''} = info
+        return res = await DB.fetchAll(tableName, selectStr, whereJson, orderByJson, limitArr)
+      } catch (err) {
+        logger.error(err)
+      }
     }
   }
-};
+}
 
 module.exports = model;
