@@ -16,6 +16,19 @@ router.get('/', c.oAuth, async (ctx, next) => {
   } else ctx.throw('获取树形菜单失败', 400);
 });
 
+// 获取菜单详情
+router.get('/:id', c.oAuth, async (ctx, next) => {
+  const { id } = ctx.params;
+  const info = await action.getMenuInfo(id);
+
+  if (info) {
+    ctx.data = info;
+  } else {
+    ctx.msg = '未找到菜单信息';
+  }
+  return;
+});
+
 router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   const { pid, name, title, path, icon, component, status } = ctx.request.body;
 

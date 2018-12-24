@@ -14,6 +14,17 @@ router.get('/', c.oAuth, async (ctx, next) => {
   } else ctx.throw('获取树形权限失败', 400);
 });
 
+router.get('/:id', c.oAuth, async (ctx, next) => {
+  const { id } = ctx.params;
+  const info = await action.getAccessInfo(id);
+  if (info) {
+    ctx.data = info
+  } else {
+    ctx.msg = '未找到权限信息'
+  }
+  return
+});
+
 router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   const {pid, mid, type, name, urls, status} = ctx.request.body;
   let level;
