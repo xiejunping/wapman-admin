@@ -32,6 +32,13 @@ const action = {
   async getChild (pid) {
     return await menuModel.getRows({pid})
   },
+  async checkInfo (info, id) {
+    const row = await menuModel.getInfoByJson(info);
+    if (id && row) {
+      return !(row.id === parseInt(id))
+    }
+    return !!row
+  },
   async excute () {
     // 事务
     await unitModel.ab();

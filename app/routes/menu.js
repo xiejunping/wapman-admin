@@ -31,8 +31,16 @@ router.get('/:id', c.oAuth, async (ctx, next) => {
 
 router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   const { pid, name, title, path, icon, component, status } = ctx.request.body;
-
   let level
+  // 验重参
+  if (await action.checkInfo({name})) {
+    ctx.msg = '路由名称已存在，请更改重试';
+    return
+  }
+  if (await action.checkInfo({path})) {
+    ctx.msg = '路由路径已存在，请更改重试';
+    return
+  }
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getMenuLevel(pid);
   const menu = await action.addMenu({ pid, name, title, path, icon, level: ++level, component, status });
@@ -69,8 +77,16 @@ router.delete('/del/:id', c.oAuth, async (ctx, next) => {
 
 router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
   const { id, pid, name, title, path, icon, component, status } = ctx.request.body;
-
-  let level
+  let level;
+  // 验重参
+  if (await action.checkInfo({name}, id)) {
+    ctx.msg = '路由名称已存在，请更改重试';
+    return
+  }
+  if (await action.checkInfo({path}, id)) {
+    ctx.msg = '路由路径已存在，请更改重试';
+    return
+  }
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getMenuLevel(pid);
   const rs = await action.editMenu(id, { pid, name, title, path, level: ++level, icon, component, status });

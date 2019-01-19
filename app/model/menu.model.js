@@ -31,6 +31,13 @@ const model = DB => {
         logger.error(err)
       }
     },
+    async getInfoByJson (info) {
+      try {
+        return res = await DB.fetchRow(info)
+      } catch (err) {
+        logger.error(err)
+      }
+    },
     async getRows (info) {
       try {
         return res = await DB.fetchRows(info)
