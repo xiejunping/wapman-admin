@@ -76,7 +76,7 @@ const rules = {
     {name: 'status', min: 0, max: 1, desc: '分组状态'}
   ],
   '/role/': [
-    {name: 'gid', require: true, min: 1, max: 11, desc: '角色分组ID'},
+    {name: 'gid', min: 1, max: 11, desc: '角色分组ID'},
     {name: 'pageIndex', min: 1, desc: '当前页码'},
     {name: 'pageSize', min: 1, desc: '分页大小'}
   ],

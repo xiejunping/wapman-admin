@@ -10,7 +10,8 @@ router.get('/', c.oAuth, c.invalid, async (ctx, next) => {
   const { gid, pageIndex = 1, pageSize = 20 } = ctx.request.query;
   const page = parseInt(pageIndex)
   const limit = parseInt(pageSize)
-  const params = { gid, pageIndex: page, pageSize: limit }
+  let params = { pageIndex: page, pageSize: limit }
+  if (parseInt(gid)) params = Object.assign(params, {gid})
   const rows = await action.getRoles(params)
   const count = await action.countRoles(params)
   if (rows) {
