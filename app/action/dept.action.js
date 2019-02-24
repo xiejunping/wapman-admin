@@ -15,9 +15,12 @@ const action = {
   async editDept (id, info) {
     return await deptModel.update(id, info);
   },
-  async getTreeDept () {
+  async getAllDept () {
     const sqlMod = 'SELECT * FROM `wap_group`';
-    const rows = await deptModel.getAll(sqlMod);
+    return await deptModel.getAll(sqlMod);
+  },
+  async getTreeDept () {
+    const rows = await this.getAllDept();
     const treeDept = this.treeSortCreat(rows);
     return treeDept;
   },

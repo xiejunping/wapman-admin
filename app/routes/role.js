@@ -1,5 +1,6 @@
 const router = require('koa-router')();
 const action = require('../action/role.action');
+const actionDept = require('../action/dept.action');
 const DateFmt = require('../utils/date');
 const logger = require('../controllers/logger');
 const c = require('../controllers/decorator');
@@ -14,6 +15,12 @@ router.get('/', c.oAuth, c.invalid, async (ctx, next) => {
   if (parseInt(gid)) params = Object.assign(params, {gid})
   const rows = await action.getRoles(params)
   const count = await action.countRoles(params)
+  // gid -> gname
+  const groups = await actionDept.getAllDept();
+  rows.map(ret => {
+    ret.gid = groups[groups.findIndex(met => met.id === ret.gid)].name
+    return ret
+  })
   if (rows) {
     ctx.data = {
       pageIndex: page,
