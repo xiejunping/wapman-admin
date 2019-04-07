@@ -1,9 +1,10 @@
 const router = require('koa-router')();
 const action = require('../action/user.action');
 const actionLogin = require('../action/login.action');
-const DateFmt = require('../utils/date');
+
 const logger = require('../controllers/logger');
 const c = require('../controllers/decorator');
+const DateFmt = require('../utils/date');
 
 router.prefix('/user');
 

@@ -1,23 +1,14 @@
-const Mysql = require('../common/helper/mysql');
-const DB = new Mysql('wap_role_access');
-const roleAccessModel = require('../model/role.access.model')(DB);
+const Mysql = require('../common/helper/mysql')
+const DB = new Mysql('wap_role_access')
 
-const action = {
-  async addAccess (info) {
-    return await roleAccessModel.add(info);
-  },
-  async delAccess (id) {
-    return await roleAccessModel.delete(id);
-  },
-  async getRowsByJson (info) {
-    return await roleAccessModel.getRows(info);
-  },
-  async editAccess (id, info) {
-    return await roleAccessModel.update(id, info);
-  },
-  async getAccessInfo (id) {
-    return await roleAccessModel.getInfoById(id);
+const BaseAction = require('./base.action.class')
+const RoleAccessModel = require('../model/role.access.model')
+const roleAccessModel = new RoleAccessModel(DB)
+
+class RoleAccessAction extends BaseAction {
+  constructor (model) {
+    super(model)
   }
-};
+}
 
-module.exports = action;
+module.exports = new RoleAccessAction(roleAccessModel)

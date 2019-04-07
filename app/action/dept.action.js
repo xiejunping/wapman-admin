@@ -1,59 +1,31 @@
-const Mysql = require('../common/helper/mysql');
-const DB = new Mysql('wap_group');
-const deptModel = require('../model/dept.model')(DB);
+const Mysql = require('../common/helper/mysql')
+const DB = new Mysql('wap_group')
 
-const logger = require('../controllers/logger');
-const utils = require('../utils/index');
+const BaseAction = require('./base.action.class')
+const DeptModel = require('../model/dept.model')
+const deptModel = new DeptModel(DB)
 
-const action = {
-  async addDept (info) {
-    return await deptModel.add(info);
-  },
-  async delDept (id) {
-    return await deptModel.delete(id);
-  },
-  async editDept (id, info) {
-    return await deptModel.update(id, info);
-  },
-  async getAllDept () {
-    const sqlMod = 'SELECT * FROM `wap_group`';
-    return await deptModel.getAll(sqlMod);
-  },
-  async getTreeDept () {
-    const rows = await this.getAllDept();
-    const treeDept = this.treeSortCreat(rows);
-    return treeDept;
-  },
-  filterArray (list, level, pid) {
-    const arr = list.filter(ret => ret.level === level && ret.pid === pid);
-    arr.sort((a, b) => a.order - b.order);
-    return arr
-  },
-  treeSortCreat (list) {
-    if (!utils.isArray(list)) return;
+const { treeSortCreat } = require('../utils/tree') // 树形结构
 
-    const array1 = this.filterArray(list, 1, 0);
-    const newArray1 = array1.map(ret => {
-      const array2 = this.filterArray(list, ret.level + 1, ret.id);
-      const newArray2 = array2.map(meta => {
-        meta.children = this.filterArray(list, meta.level + 1, meta.id);
-        return meta;
-      });
-      ret.children = newArray2;
-      return ret;
-    });
-    return newArray1;
-  },
-  async getDeptInfo (id) {
-    return await deptModel.getInfoById(id);
-  },
+class DeptAction extends BaseAction {
+  constructor (model) {
+    super(model)
+  }
+
+  /**
+   * 取部门
+   * @param id
+   * @returns {Promise<void>}
+   */
   async getDeptLevel (id) {
-    const { level } = await deptModel.getInfoById(id);
+    const { level } = await super.getInfo(id)
     return level
-  },
-  async getChild (pid) {
-    return await deptModel.getRows({pid})
+  }
+
+  async getTreeDept () {
+    const rows = await super.getAll()
+    return treeSortCreat(rows)
   }
 }
 
-module.exports = action;
+module.exports = new DeptAction(deptModel)

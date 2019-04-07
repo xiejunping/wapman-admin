@@ -1,8 +1,9 @@
 const router = require('koa-router')();
 const action = require('../action/access.action');
-const DateFmt = require('../utils/date');
+
 const logger = require('../controllers/logger');
 const c = require('../controllers/decorator');
+const DateFmt = require('../utils/date');
 
 router.prefix('/access');
 
@@ -16,7 +17,7 @@ router.get('/', c.oAuth, async (ctx, next) => {
 
 router.get('/:id', c.oAuth, async (ctx, next) => {
   const { id } = ctx.params;
-  const info = await action.getAccessInfo(id);
+  const info = await action.getInfo(id);
   if (info) {
     ctx.data = info
   } else {
@@ -30,7 +31,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getAccessLevel(pid);
-  const access = await action.addAccess({ pid, mid, name, type, level: ++level, urls, status });
+  const access = await action.add({ pid, mid, name, type, level: ++level, urls, status });
   if (access.insertId) {
     logger.console(`权限-${name}-添加成功：id为${access.insertId}`);
     ctx.data = DateFmt.now();
@@ -45,7 +46,7 @@ router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
   let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getAccessLevel(pid);
-  const rs = await action.editAccess(id, { pid, mid, name, type, level: ++level, urls, status });
+  const rs = await action.edit(id, { pid, mid, name, type, level: ++level, urls, status });
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();
     return
@@ -54,9 +55,9 @@ router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
   }
 });
 
-router.patch('/del/:id', c.oAuth, async (ctx, next) => {
+router.delete('/del/:id', c.oAuth, async (ctx, next) => {
   const { id } = ctx.params;
-  const info = await action.getAccessInfo(id);
+  const info = await action.getInfo(id);
   const children = await action.getChild(id);
   if (!info) {
     ctx.msg = '没有ID权限信息';
@@ -66,7 +67,7 @@ router.patch('/del/:id', c.oAuth, async (ctx, next) => {
     ctx.msg = '权限下有权限，不能删除';
     return
   }
-  const rs = await action.delAccess(id);
+  const rs = await action.del(id);
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();
     return

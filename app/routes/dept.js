@@ -1,8 +1,9 @@
 const router = require('koa-router')();
 const action = require('../action/dept.action');
-const DateFmt = require('../utils/date');
+
 const logger = require('../controllers/logger');
 const c = require('../controllers/decorator');
+const DateFmt = require('../utils/date');
 
 router.prefix('/dept');
 
@@ -17,11 +18,11 @@ router.get('/', c.oAuth, async (ctx, next) => {
 
 router.get('/:id', c.oAuth, async (ctx, next) => {
   const { id } = ctx.params;
-  const info = await action.getDeptInfo(id);
+  const info = await action.getInfo(id);
   if (info) {
-    ctx.data = info
+    ctx.data = info;
   } else {
-    ctx.msg = '未找到分组信息'
+    ctx.msg = '未找到分组信息';
   }
   return
 });
@@ -32,7 +33,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
   let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getDeptLevel(pid);
-  const dept = await action.addDept({ pid, name, level: ++level, status });
+  const dept = await action.add({ pid, name, level: ++level, status });
   if (dept.insertId) {
     logger.console(`分组-${name}-添加成功：id为${dept.insertId}`);
     ctx.data = DateFmt.now();
@@ -45,7 +46,7 @@ router.post('/add', c.oAuth, c.invalid, async (ctx, next) => {
 router.delete('/del/:id', c.oAuth, async (ctx, next) => {
   const { id } = ctx.params;
 
-  const info = await action.getDeptInfo(id);
+  const info = await action.getInfo(id);
   const children = await action.getChild(id);
   if (!info) {
     ctx.msg = '没有ID分组信息';
@@ -55,7 +56,7 @@ router.delete('/del/:id', c.oAuth, async (ctx, next) => {
     ctx.msg = '分组下有分组，不能删除';
     return
   }
-  const rs = await action.delDept(id);
+  const rs = await action.del(id);
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();
     return
@@ -70,7 +71,7 @@ router.patch('/edit', c.oAuth, c.invalid, async (ctx, next) => {
   let level;
   if (parseInt(pid) === 0) level = parseInt(pid);
   else level = await action.getDeptLevel(pid);
-  const rs = await action.editDept(id, { pid, name, level: ++level, status });
+  const rs = await action.edit(id, { pid, name, level: ++level, status });
   if (rs.affectedRows === 1) {
     ctx.data = DateFmt.now();
     return

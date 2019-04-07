@@ -121,6 +121,17 @@ class DB {
     })
   }
 
+  getAll () {
+    const { tableName, pool } = this
+    return new Promise((resolve, reject) => {
+      const sqlMod = `SELECT * FROM ${tableName}`
+      pool.query(sqlMod, function (error, result) {
+        if (error) reject(error)
+        else resolve(result)
+      })
+    })
+  }
+
   /**
    * 统计
    * @param idJson

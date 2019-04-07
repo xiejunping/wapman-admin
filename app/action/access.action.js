@@ -1,37 +1,50 @@
-const Mysql = require('../common/helper/mysql');
-const DB = new Mysql('wap_access');
-const accessModel = require('../model/access.model')(DB);
-const { treeSortCreat } = require('../utils/tree');
+const Mysql = require('../common/helper/mysql')
+const DB = new Mysql('wap_access')
 
-const action = {
-  async addAccess (info) {
-    return await accessModel.add(info);
-  },
-  async delAccess (id) {
-    return await accessModel.delete(id);
-  },
-  async editAccess (id, info) {
-    return await accessModel.update(id, info);
-  },
+const BaseAction = require('./base.action.class')
+const AccessModel = require('../model/access.model')
+const accessModel = new AccessModel(DB)
+
+const { treeSortCreat } = require('../utils/tree') // 树形结构
+
+class AccessAction extends BaseAction {
+  /**
+   * 构造函数
+   * @param model
+   */
+  constructor (model) {
+    super(model)
+  }
+
+  /**
+   * 取出记录 树形结构
+   * @returns {Promise<void>}
+   */
   async getTreeAccess () {
-    const sqlMod = 'SELECT * FROM `wap_access`';
-    const rows = await accessModel.getAll(sqlMod);
+    const rows = await super.getAll()
     return treeSortCreat(rows)
-  },
-  async getAccessInfo (id) {
-    return await accessModel.getInfoById(id);
-  },
+  }
+
+  /**
+   * 查出等级
+   * @param id
+   * @returns {Promise<*>}
+   */
   async getAccessLevel (id) {
-    const { level } = await accessModel.getInfoById(id);
-    return level
-  },
-  async getChild (pid) {
-    return await accessModel.getRows({pid})
-  },
+    const { level } = await super.getInfoById(id)
+    if (level) return level
+    else throw new Error(`getAccessLevel中level：${level}`)
+  }
+
+  /**
+   *
+   * @param ids
+   * @returns {Promise<*>}
+   */
   async getRows (ids) {
     const sqlMod = `SELECT \`mid\` FROM \`wap_access\` WHERE \`id\` in (${ids})`;
-    return await accessModel.getAll(sqlMod)
+    return await super.query(sqlMod)
   }
-};
+}
 
-module.exports = action;
+module.exports = new AccessAction(accessModel)
