@@ -37,7 +37,7 @@ class AccessAction extends BaseAction {
   }
 
   /**
-   *
+   * 获取权限菜单
    * @param ids
    * @returns {Promise<*>}
    */
