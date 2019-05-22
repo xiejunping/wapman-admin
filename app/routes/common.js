@@ -86,7 +86,8 @@ router.get('/owner/check', c.invalid, async (ctx, next) => {
   const rs = await action.checkSignature(timestamp, nonce);
   logger.console(rs)
   if (signature && rs === signature) {
-    ctx.data = echostr;
+    ctx.type = 'text';
+    ctx.body = echostr;
     return;
   } else {
     ctx.msg = 'checkSignature failed';
