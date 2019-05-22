@@ -79,7 +79,12 @@ router.get('/url/short', c.invalid, async (ctx, next) => {
 router.get('/owner/check', c.invalid, async (ctx, next) => {
   const { signature, nonce, timestamp, echostr } = ctx.request.query;
 
+  logger.console(`signature:${signature}`)
+  logger.console(`nonce:${nonce}`)
+  logger.console(`timestamp:${timestamp}`)
+  logger.console(`echostr:${echostr}`)
   const rs = await action.checkSignature(timestamp, nonce);
+  logger.console(rs)
   if (signature && rs === signature) {
     ctx.data = echostr;
     return;
