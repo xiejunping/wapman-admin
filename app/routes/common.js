@@ -102,7 +102,7 @@ router.get('/weixin/url', async (ctx, next) => {
 })
 
 // access_token
-router.get('/weixin/callback', async (ctx, next) => {
+router.get('/weixin/callback', c.invalid, async (ctx, next) => {
   const { code, status } = ctx.request.query;
 
   // 获取微信access_token
