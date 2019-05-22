@@ -87,7 +87,7 @@ router.get('/owner/check', c.invalid, async (ctx, next) => {
   logger.console(rs)
   if (signature && rs === signature) {
     ctx.type = 'text';
-    ctx.body = echostr;
+    ctx.body = echostr + '';
     return;
   } else {
     ctx.msg = 'checkSignature failed';
