@@ -75,6 +75,19 @@ router.get('/url/short', c.invalid, async (ctx, next) => {
   } else ctx.throw(response.statusText, 400);
 });
 
+// 微信服务器验证
+router.get('/owner/check', c.invalid, async (ctx, next) => {
+  const { signature, nonce, timestamp, echostr } = ctx.request.query;
+
+  const re = await action.checkSignature(timestamp, nonce);
+  if (signature && rs) {
+    ctx.data = echostr;
+    return;
+  } else {
+    ctx.throw('checkSignature failed', 400);
+  }
+})
+
 // 扫码注册
 router.get('/weixin/register', c.invalid, async (ctx, next) => {
   const { code, status } = ctx.request.query;

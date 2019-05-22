@@ -36,6 +36,7 @@
     "pug": "^2.0.0-rc.1",
     "qcloudsms_js": "^0.1.0",
     "redis": "^2.8.0",
+    "sha1": "^1.1.1",
     "string-random": "^0.1.0"
   },
   "devDependencies": {

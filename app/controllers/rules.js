@@ -1,4 +1,9 @@
 const rules = {
+  '/owner/check': [
+    {name: 'signature', require: true, min: 4, max: 100, desc: '微信加密签名'},
+    {name: 'nonce', min: 0, max: 100, desc: '随机数'},
+    {name: 'timestamp', min: 0, max: 100, desc: '时间戳'},
+    {name: 'echostr', min: 0, max: 100, desc: '随机字符串'}],
   '/weixin/register': [
     {name: 'code', require: true, min: 4, max: 100, desc: '微信获取CODE'},
     {name: 'status', min: 0, max: 100, desc: '自定义参数'}],

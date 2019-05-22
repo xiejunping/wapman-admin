@@ -1,3 +1,4 @@
+const sha1 = require('sha1');
 const SMS = require('../controllers/sms');
 const RD = require('../common/helper/redis');
 const api = require('../common/helper/api');
@@ -5,7 +6,7 @@ const utils = require('../utils/index');
 const logger = require('../controllers/logger');
 
 const { codeExpire } = require('../common/config/server');
-const { appid, secret } = require('../common/config/weixin');
+const { appid, secret, token } = require('../common/config/weixin');
 
 const commonControl = {
   /**
@@ -73,6 +74,16 @@ const commonControl = {
     } catch (err) {
       logger.error(err);
     }
+  },
+  /**
+   * 微信验证服务
+   * @param timestamp
+   * @param nonce
+   * @returns {Promise<*>}
+   */
+  checkSignature: async (timestamp, nonce) => {
+    let str = [token, timestamp, nonce].sort().join('');
+    return sha1(str);
   },
   /**
    * 微信access_token
