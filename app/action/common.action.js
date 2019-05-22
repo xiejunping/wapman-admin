@@ -6,7 +6,7 @@ const utils = require('../utils/index');
 const logger = require('../controllers/logger');
 
 const { codeExpire } = require('../common/config/server');
-const { appid, secret, token } = require('../common/config/weixin');
+const { appid, secret, token, redirectUrl, takenUrl, authUrl } = require('../common/config/weixin');
 
 const commonControl = {
   /**
@@ -85,16 +85,28 @@ const commonControl = {
     let str = [token, timestamp, nonce].sort().join('');
     return sha1(str);
   },
+  getStartUrl: async (state) => {
+    let url = takenUrl;
+
+    url = url.replace('APPID', appid)
+    url = url.replace('REDIRECT_URI', encodeURIComponent(redirectUrl))
+    url = url.replace('SCOPE', 'snsapi_login')
+    url = url.replace('STATE', state)
+    return url
+  },
   /**
    * 微信access_token
    * @param code
    * @returns {Promise<*>}
    */
   getAccessToken: async (code) => {
-    const url = 'https://api.weixin.qq.com/sns/oauth2/access_token';
+    let url = authUrl;
 
+    url = url.replace('APPID', appid)
+    url = url.replace('SECRET', secret)
+    url = url.replace('CODE', code)
     try {
-      return await api.fetch(url, { appid, secret, code, grant_type: 'authorization_code' });
+      return await api.fetch(url);
     } catch (err) {
       logger.error(err);
     }

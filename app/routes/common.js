@@ -79,12 +79,7 @@ router.get('/url/short', c.invalid, async (ctx, next) => {
 router.get('/owner/check', c.invalid, async (ctx, next) => {
   const { signature, nonce, timestamp, echostr } = ctx.request.query;
 
-  logger.console(`signature:${signature}`)
-  logger.console(`nonce:${nonce}`)
-  logger.console(`timestamp:${timestamp}`)
-  logger.console(`echostr:${echostr}`)
   const rs = await action.checkSignature(timestamp, nonce);
-  logger.console(rs)
   if (signature && rs === signature) {
     ctx.type = 'text';
     ctx.body = echostr + '';
@@ -93,6 +88,26 @@ router.get('/owner/check', c.invalid, async (ctx, next) => {
     ctx.msg = 'checkSignature failed';
     return;
   }
+})
+
+// 打开扫一扫页面
+router.get('/weixin/url', async (ctx, next) => {
+  const redirectUrl = await action.getStartUrl();
+  logger.console(redirectUrl);
+  if (redirectUrl) {
+    ctx.type = 'redirect';
+    ctx.redirect(redirectUrl);
+    return;
+  } else ctx.throw('微信配置有误', 400);
+})
+
+// access_token
+router.get('/weixin/callback', async (ctx, next) => {
+  const { code, status } = ctx.request.query;
+
+  // 获取微信access_token
+  const response = await action.getAccessToken(code);
+  logger.console(JSON.stringify(response));
 })
 
 // 扫码注册
