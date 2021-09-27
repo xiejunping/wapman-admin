@@ -47,7 +47,6 @@ class RoleAction extends BaseAction {
     try {
       const sqlMod = `UPDATE \`wap_role\` SET \`gid\` = ${gid} WHERE id IN (${id.join(',')})`
       return await super.query(sqlMod)
-      // return await Mailer.sendMail('xiejunping@caohua.com', 'nodejs服务器发送邮件', '<b>Hello world?</b>');
     } catch (error) {
       logger.error(error)
     }
